@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool dfs(int r,int c,vector<vector<int>>& grid1,vector<vector<int>>& grid2,set<pair<int,int>> &vis){
+         if(r<0||c<0||r==grid1.size()||c==grid1[0].size()||grid2[r][c]==0||vis.count({r,c})){
+              return true;
+         }
+         vis.insert({r,c});
+         bool res=true;
+         if(grid1[r][c]==0){
+             res=false;
+         }
+        res= dfs(r+1,c,grid1,grid2,vis)&& res;
+         res=dfs(r-1,c,grid1,grid2,vis)&&res;
+         res=dfs(r,c+1,grid1,grid2,vis)&&res;
+         res=dfs(r,c-1,grid1,grid2,vis)&&res;
+        return res;
+    }
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        int rows=grid1.size();
+        int cols=grid1[0].size();
+        set<pair<int,int>> vis;
+        int count=0;
+        for(int r=0;r<rows;r++){
+            for(int c=0;c<cols;c++){
+               if(grid2[r][c]==1&&!vis.count({r,c})&&dfs(r,c,grid1,grid2,vis)){
+                  count+=1;
+               }
+            }
+        }
+        return count;
+    }
+};
